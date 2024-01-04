@@ -18,4 +18,21 @@ async function createNewBlog(req, res) {
     }
 }
 
-module.exports = { readAllBlogs, createNewBlog };
+async function deleteBlog(req, res) {
+    const _id = req.params.blogId;
+    try {
+        const deleteBlog = await Blog.findByIdAndDelete({ _id });
+        res.status(200).json({
+            msg: "Deletion Succesfull",
+        });
+    } catch (error) {
+        const msg = error.message;
+        res.status(500).json({
+            msg,
+        });
+    }
+}
+
+async function updateBlog(req, res) {}
+
+module.exports = { readAllBlogs, createNewBlog, deleteBlog };
