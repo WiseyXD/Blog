@@ -5,6 +5,8 @@ async function readAllBlogs(req, res) {
     res.status(200).json({ allBlogs });
 }
 
+// Null Day
+
 async function createNewBlog(req, res) {
     const { title, content, author } = req.body;
     try {
@@ -33,6 +35,24 @@ async function deleteBlog(req, res) {
     }
 }
 
-async function updateBlog(req, res) {}
+async function updateBlog(req, res) {
+    const _id = req.params.blogId;
+    const { title, content, author } = req.body;
+    try {
+        const updateBlog = await Blog.findByIdAndUpdate(
+            _id,
+            { title, content, author },
+            { new: true }
+        );
+        res.status(201).json({
+            msg: "Succesfully updated",
+        });
+    } catch (error) {
+        const msg = error.message;
+        res.status(500).json({
+            msg,
+        });
+    }
+}
 
-module.exports = { readAllBlogs, createNewBlog, deleteBlog };
+module.exports = { readAllBlogs, createNewBlog, deleteBlog, updateBlog };
